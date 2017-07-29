@@ -1,0 +1,72 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  color: #fff;
+}
+
+#photo {
+  background: url(https://s12.postimg.org/lmn1x17d9/DSC01735.jpg) no-repeat center center fixed;
+  background-size: cover;
+  opacity: 0.5;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0px;
+  left: 0px;
+  z-index: -5;
+}
+
+h1 {
+  font-weight: 600;
+  margin-top: 50px;
+}
+
+#main {
+  background-color: rgba(143, 153, 174, 0.75);
+  border: 1px solid white;
+}
+
+/* Loading spinner */
+#loader {
+    border: 16px solid #f3f3f3; /* main color */
+    border-top: 16px solid #6695cc; /*inner color*/
+    border-radius: 50%;
+    height: 100px;
+    margin: 50px auto;
+    width: 100px;
+    animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+
+
+#temp {
+  font-size: 40px;
+}
+
+#summary {
+  margin-top: 15px;
+}
+
+#convert {
+  margin-bottom: 15px;
+  border-radius: 0px;
+  color: #777;
+}
+
+a {
+  color: #fff;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #777;
+  text-decoration: none;
+}
+
+footer {
+  margin-top: 20px;
+}
