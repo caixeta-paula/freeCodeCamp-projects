@@ -52,6 +52,21 @@ $(document).ready(function() {
         // display weather summary on page
         $("#summary").html(data.currently.summary);
         
+         
+      
+        // display weather icons from Dark Sky
+        var skycons = new Skycons({"color":"white"});
+        skycons.add("icon", data.currently.icon);
+        skycons.play();
+        
+        
+        
+      }); 
+      } // end get weather function
+      
+      displayLocation(geocoding);
+      getWeather(api);
+      
         // convert displayed temperature to Fahrenheit or Celsius
         function convertTemp(temp) {
           if (temp == tempF) {
@@ -63,23 +78,12 @@ $(document).ready(function() {
             currentTemp = $("#temp").text().replace(/[^0-9]/g, '');
             $("#convert").html("Convert to °C");
           }
-        } 
+        }
       
-        // display weather icons from Dark Sky
-        var skycons = new Skycons({"color":"white"});
-        skycons.add("icon", data.currently.icon);
-        skycons.play();
-        
-        // button to convert temperature scale
+      // button to convert temperature scale
         $("#convert").on("click", function () {
           convertTemp(currentTemp);
         });
-        
-      }); 
-      } // end get weather function
-      
-      displayLocation(geocoding);
-      getWeather(api);
       
       /* retrieve and display weather from user input location */
       function displayWeatherFromInput() {
