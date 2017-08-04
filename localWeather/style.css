@@ -41,8 +41,6 @@ h1 {
     100% { transform: rotate(360deg); }
 }
 
-
-
 #temp {
   font-size: 40px;
 }
@@ -55,6 +53,25 @@ h1 {
   margin-bottom: 15px;
   border-radius: 0px;
   color: #777;
+}
+
+#city-input {
+  margin-bottom: 15px;
+  color: #777;
+}
+
+#city-input {
+  padding: 5px;
+  text-align: center;
+}
+
+#city-input, #search {
+  display: inline-block;
+}
+
+.glyphicon {
+  padding-left: 5px;
+  font-size: 20px;
 }
 
 a {

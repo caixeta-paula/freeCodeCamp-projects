@@ -8,9 +8,9 @@ $(document).ready(function() {
   
   // Dark Sky API key and formatted URL
   var key = "b3de1e3c7dd2d8741ccf344b96b90285";
-  var api = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/";
+  var api = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/";
   
-  // retrieve location from browser
+  /* retrieve location from browser */
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
         lat = position.coords.latitude;
@@ -19,7 +19,8 @@ $(document).ready(function() {
         // Google Maps API URL with user latitude and longitude
         var geocoding = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "%2C" + long + "&language=en";
         
-        // retrieve info from Google Maps API
+      /* retrieve info from Google Maps API */
+      function displayLocation(geocoding) {
         $.getJSON(geocoding).done(function(location) {
           var city = location.results[0].address_components[2].long_name;
           var state = location.results[0].address_components[4].long_name;
@@ -28,12 +29,14 @@ $(document).ready(function() {
           
           // remove "Loading..." placeholder
           $("#loader").remove();
-        })
+        }); 
+      } // end display location function
      
       // Dark Sky API URL with added key, user longitude and latitude
       api += key + "/" + lat + "," + long;
       
-      // retrieve info from Dark Sky API
+      /* retrieve info from Dark Sky API */
+      function getWeather(api) {
       $.getJSON(api, function(data) {
         tempF = Math.round(data.currently.temperature);
         tempC = Math.round((tempF - 32) * (5/9));
@@ -42,7 +45,9 @@ $(document).ready(function() {
         $("#temp").html(tempF + "°F");
         // numerical temperature reading stripped of extra symbols
         currentTemp = $("#temp").text().replace(/[^0-9]/g, '');
-        $("#convert").append("C");
+        
+        // remove "Loading..." placeholder if it still appears
+          $("#loader").remove();
         
         // display weather summary on page
         $("#summary").html(data.currently.summary);
@@ -68,17 +73,48 @@ $(document).ready(function() {
         // button to convert temperature scale
         $("#convert").on("click", function () {
           convertTemp(currentTemp);
-        }); 
+        });
         
-        
+      }); 
+      } // end get weather function
+      
+      displayLocation(geocoding);
+      getWeather(api);
+      
+      /* retrieve and display weather from user input location */
+      function displayWeatherFromInput() {
+        var newCity = $("#city-input").val();
+  
+        var cityURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + newCity + '';
+        // use city input to get latitude and longitude
+        $.getJSON(cityURL).done(function(location) {
+          var cityLat = location.results[0].geometry.location.lat;
+          var cityLong = location.results[0].geometry.location.lng;
+         
+          $("#location").html(newCity); // display user input as location
+    
+          // retrieve weather for new city coordinates
+          var newCityWeather = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/b3de1e3c7dd2d8741ccf344b96b90285/' + cityLat + ',' + cityLong;
+          getWeather(newCityWeather);
+          // reset conversion button to default
+          $("#convert").html("Convert to °C");
+  });
+}
+
+      // click search icon to get weather from input
+      $("#search").on("click", function() {
+        displayWeatherFromInput();
       });
+
+      // on enter to get weather from input
+      $("#city-input").on("keyup", function(event) {
+        if (event.which === 13) {
+          displayWeatherFromInput();
+        }
+      });
+      
     });
     
-    /* function addSkycon() {
-      var skycons = new Skycons({"color":"white"});
-      skycons.add("icon", data.currently.icon);
-      skycons.play();
-    } */
     
     
     // before url: https://cors-anywhere.herokuapp.com/, crossorigin.me
@@ -89,10 +125,9 @@ $(document).ready(function() {
     
     
 }
-  
-
 
 
 
 
 });
+
