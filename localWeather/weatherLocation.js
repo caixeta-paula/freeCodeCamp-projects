@@ -120,6 +120,12 @@ $(document).ready(function() {
           // reset conversion button to default
           $("#convert").html("Convert to °C");
           }
+          // make conversion button function normally again
+          $("#convert").on("click", function () {
+          convertTemp(currentTemp);
+          });
+          
+          $("#icon-error").html('');
         })
         .fail(function() {
           $("#summary").html("Failed to load weather data");
@@ -130,9 +136,28 @@ $(document).ready(function() {
       $("#search").on("click", function() {
         displayWeatherFromInput();
         if (newCity === "") { // if user did not enter a city
+            $("#location").html("Location Unavailable");
+            $("#temp").html("");
+            $("#summary").html("");
+            $("#icon").addClass("inactive");
+            
+            // display error icon
+            $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
+            
+            $("#convert").on("click", function () {
+              $("#temp").html("");
+            }); // nullify conversion button
+          
           $("#alert").removeClass("inactive"); // display alert box
         } else {
-          $("#alert").addClass("inactive");
+          $("#icon").removeClass("inactive"); 
+          $("#icon-error").html(''); // remove error icon
+          $("#alert").addClass("inactive"); // remove alert box
+          
+          // make conversion button function normally again
+          $("#convert").on("click", function () {
+            convertTemp(currentTemp);
+          });
         }
       });
 
@@ -143,9 +168,28 @@ $(document).ready(function() {
         }
         
         if (newCity === "") {
-          $("#alert").removeClass("inactive");
+          $("#location").html("Location Unavailable");
+            $("#temp").html("");
+            $("#summary").html("");
+            $("#icon").addClass("inactive");
+            
+            // display error icon
+            $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
+            
+            $("#convert").on("click", function () {
+              $("#temp").html("");
+            }); // nullify conversion button
+          
+          $("#alert").removeClass("inactive"); // display alert box
         } else {
-          $("#alert").addClass("inactive");
+          $("#icon").removeClass("inactive");
+          $("#icon-error").html(''); // remove error icon
+          $("#alert").addClass("inactive"); // remove alert box
+          
+          // make conversion button function normally again
+          $("#convert").on("click", function () {
+            convertTemp(currentTemp);
+          });
         }
       });
       
