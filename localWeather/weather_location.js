@@ -6,6 +6,8 @@ $(document).ready(function() {
   var tempC;
   var currentTemp;
   
+  var newCity;
+  
   // Dark Sky API key and formatted URL
   var key = "b3de1e3c7dd2d8741ccf344b96b90285";
   var api = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/";
@@ -78,7 +80,7 @@ $(document).ready(function() {
             currentTemp = $("#temp").text().replace(/[^0-9]/g, '');
             $("#convert").html("Convert to °C");
           }
-        }
+        } // end conversion function
       
       // button to convert temperature scale
         $("#convert").on("click", function () {
@@ -87,33 +89,63 @@ $(document).ready(function() {
       
       /* retrieve and display weather from user input location */
       function displayWeatherFromInput() {
-        var newCity = $("#city-input").val();
+        newCity = $("#city-input").val();
   
         var cityURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + newCity + '';
         // use city input to get latitude and longitude
         $.getJSON(cityURL).done(function(location) {
-          var cityLat = location.results[0].geometry.location.lat;
-          var cityLong = location.results[0].geometry.location.lng;
+          if (location.status === "ZERO_RESULTS") {
+            $("#location").html("Location Unavailable");
+            $("#temp").html("");
+            $("#summary").html("");
+            $("#icon").addClass("inactive");
+            
+            // display error icon
+            $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
+            
+            $("#convert").on("click", function () {
+              $("#temp").html("");
+            }); // nullify conversion button
+            
+            $("#alert").removeClass("inactive"); // display alert
+          } else {
+            var cityLat = location.results[0].geometry.location.lat;
+            var cityLong = location.results[0].geometry.location.lng;
          
-          $("#location").html(newCity); // display user input as location
+            $("#location").html(newCity); // display user input as location
     
           // retrieve weather for new city coordinates
           var newCityWeather = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/b3de1e3c7dd2d8741ccf344b96b90285/' + cityLat + ',' + cityLong;
           getWeather(newCityWeather);
           // reset conversion button to default
           $("#convert").html("Convert to °C");
-  });
-}
+          }
+        })
+        .fail(function() {
+          $("#summary").html("Failed to load weather data");
+        }); // end JSON call
+      } // end display weather from input function
 
       // click search icon to get weather from input
       $("#search").on("click", function() {
         displayWeatherFromInput();
+        if (newCity === "") { // if user did not enter a city
+          $("#alert").removeClass("inactive"); // display alert box
+        } else {
+          $("#alert").addClass("inactive");
+        }
       });
 
       // on enter to get weather from input
       $("#city-input").on("keyup", function(event) {
         if (event.which === 13) {
           displayWeatherFromInput();
+        }
+        
+        if (newCity === "") {
+          $("#alert").removeClass("inactive");
+        } else {
+          $("#alert").addClass("inactive");
         }
       });
       

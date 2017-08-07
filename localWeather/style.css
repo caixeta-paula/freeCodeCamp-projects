@@ -21,8 +21,7 @@ h1 {
 }
 
 #main {
-  background-color: rgba(143, 153, 174, 0.75);
-  border: 1px solid white;
+  background-color: rgba(56, 56, 56, 0.20);
 }
 
 /* Loading spinner */
@@ -39,6 +38,15 @@ h1 {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
+}
+
+#icon-error {
+  display: block;
+  font-size: 70px;
+}
+
+.inactive {
+  display: none;
 }
 
 #temp {
@@ -62,14 +70,20 @@ h1 {
 
 #city-input {
   padding: 5px;
-  text-align: center;
+  text-align: left;
 }
 
 #city-input, #search {
   display: inline-block;
 }
 
-.glyphicon {
+#alert {
+  margin-left: 20%;
+  margin-right: 20%;
+  border: 1px solid #fff;
+}
+
+#search {
   padding-left: 5px;
   font-size: 20px;
 }
