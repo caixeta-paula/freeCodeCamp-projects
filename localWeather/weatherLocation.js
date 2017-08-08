@@ -10,7 +10,7 @@ $(document).ready(function() {
   
   // Dark Sky API key and formatted URL
   var key = "b3de1e3c7dd2d8741ccf344b96b90285";
-  var api = "https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/";
+  var api = "https://crossorigin.me/https://api.darksky.net/forecast/";
   
   /* retrieve location from browser */
   if (navigator.geolocation) {
@@ -55,15 +55,13 @@ $(document).ready(function() {
         $("#summary").html(data.currently.summary);
         
          
-      
+        $("#icon").removeClass("inactive"); // makes element active if not previously
         // display weather icons from Dark Sky
         var skycons = new Skycons({"color":"white"});
         skycons.add("icon", data.currently.icon);
         skycons.play();
         
-        
-        
-      }); 
+      }); // end JSON call
       } // end get weather function
       
       displayLocation(geocoding);
@@ -82,7 +80,7 @@ $(document).ready(function() {
           }
         } // end conversion function
       
-      // button to convert temperature scale
+        // button to convert temperature scale
         $("#convert").on("click", function () {
           convertTemp(currentTemp);
         });
@@ -94,7 +92,7 @@ $(document).ready(function() {
         var cityURL = 'https://maps.googleapis.com/maps/api/geocode/json?address=' + newCity + '';
         // use city input to get latitude and longitude
         $.getJSON(cityURL).done(function(location) {
-          if (location.status === "ZERO_RESULTS") {
+          if (location.status === "ZERO_RESULTS" || newCity.match(/^[0-9a-zA-Z]+$/)) {
             $("#location").html("Location Unavailable");
             $("#temp").html("");
             $("#summary").html("");
@@ -102,10 +100,9 @@ $(document).ready(function() {
             
             // display error icon
             $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
-            
-            $("#convert").on("click", function () {
-              $("#temp").html("");
-            }); // nullify conversion button
+
+            // disable conversion button
+            $("#convert").prop("disabled", true);
             
             $("#alert").removeClass("inactive"); // display alert
           } else {
@@ -114,22 +111,24 @@ $(document).ready(function() {
          
             $("#location").html(newCity); // display user input as location
     
-          // retrieve weather for new city coordinates
-          var newCityWeather = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/b3de1e3c7dd2d8741ccf344b96b90285/' + cityLat + ',' + cityLong;
-          getWeather(newCityWeather);
-          // reset conversion button to default
-          $("#convert").html("Convert to °C");
-          }
-          // make conversion button function normally again
-          $("#convert").on("click", function () {
-          convertTemp(currentTemp);
-          });
+            // retrieve weather for new city coordinates
+            var newCityWeather = 'https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/b3de1e3c7dd2d8741ccf344b96b90285/' + cityLat + ',' + cityLong;
+            getWeather(newCityWeather);
+            // reset conversion button to default
+            $("#convert").html("Convert to °C");
+
+            // enable conversion button
+            $("#convert").prop("disabled", false);
           
-          $("#icon-error").html('');
-        })
+            $("#icon-error").html('');
+
+            } // end if/else
+        }) // end done
         .fail(function() {
           $("#summary").html("Failed to load weather data");
-        }); // end JSON call
+          $("#icon").addClass("inactive");
+          $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
+        }); // end fail/JSON call
       } // end display weather from input function
 
       // click search icon to get weather from input
@@ -142,31 +141,28 @@ $(document).ready(function() {
             $("#icon").addClass("inactive");
             
             // display error icon
-            $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
-            
-            $("#convert").on("click", function () {
-              $("#temp").html("");
-            }); // nullify conversion button
+            $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>'); 
+
+            // disable conversion button
+            $("#convert").prop("disabled", true);
           
           $("#alert").removeClass("inactive"); // display alert box
         } else {
-          $("#icon").removeClass("inactive"); 
+          //$("#icon").removeClass("inactive"); // icon reappears 
           $("#icon-error").html(''); // remove error icon
+
+          // enable conversion button
+            $("#convert").prop("disabled", false);
+
           $("#alert").addClass("inactive"); // remove alert box
-          
-          // make conversion button function normally again
-          $("#convert").on("click", function () {
-            convertTemp(currentTemp);
-          });
-        }
-      });
+        } // end if/else
+      }); // end click event function
 
       // on enter to get weather from input
       $("#city-input").on("keyup", function(event) {
         if (event.which === 13) {
           displayWeatherFromInput();
         }
-        
         if (newCity === "") {
           $("#location").html("Location Unavailable");
             $("#temp").html("");
@@ -175,25 +171,23 @@ $(document).ready(function() {
             
             // display error icon
             $("#icon-error").html('<span class="glyphicon glyphicon-remove"></span>');
-            
-            $("#convert").on("click", function () {
-              $("#temp").html("");
-            }); // nullify conversion button
+
+            // disable conversion button
+            $("#convert").prop("disabled", true);
           
           $("#alert").removeClass("inactive"); // display alert box
         } else {
-          $("#icon").removeClass("inactive");
+          //$("#icon").removeClass("inactive"); // icon reappears
           $("#icon-error").html(''); // remove error icon
-          $("#alert").addClass("inactive"); // remove alert box
           
-          // make conversion button function normally again
-          $("#convert").on("click", function () {
-            convertTemp(currentTemp);
-          });
-        }
-      });
+          // enable conversion button
+            $("#convert").prop("disabled", false);
+
+          $("#alert").addClass("inactive"); // remove alert box
+        } // end if/else
+      }); // end enter input event
       
-    });
+    }); // end navigator
     
     
     
@@ -204,10 +198,10 @@ $(document).ready(function() {
     // Google Maps key: AIzaSyA_2Y1wkrqSlqiycIX54sNS--xLvzssw-E
     
     
-}
+} // end if geolocation
 
 
 
 
-});
+}); // document ready
 
