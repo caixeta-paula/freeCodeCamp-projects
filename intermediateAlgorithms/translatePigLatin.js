@@ -1,22 +1,15 @@
+// Refactored my original solution to learn and use regex after looking at hints
 
 function translatePigLatin(str) {
-  var cluster = str.slice(0,2);
+  var regex = /[aeiou]/gi;
   
-  switch (str[0]) {
-    case "a":
-    case "e":
-    case "i":
-    case "o":
-    case "u":
-      return str + "way";
-  }
-  
-  if (str[1] != "a" && str[1] != "e" && str[1] != "i" && str[1] != "o" && str[1] != "u") {
-    return str.slice(2) + cluster + "ay";
+  if (str[0].match(regex)) {
+    return str + "way";
   } else {
-    return str.slice(1) + str[0] + "ay";
+    var vowelIndex = str.indexOf(str.match(regex)[0]); // (regex)[0] is the first vowel match
+    return str.slice(vowelIndex) + str.slice(0, vowelIndex) + "ay";
   }
-  
+    
 }
 
 translatePigLatin("glove");
