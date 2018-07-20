@@ -4,13 +4,13 @@ body {
   top: 0;
   left: 0;
   font-family: 'Roboto', sans-serif;
-  background-image: url(https://s26.postimg.org/n62eh3f55/twitch_logo_bg.png);
+  background-image: url(https://s26.postimg.cc/ozmqjxxo9/twitch-logo-light.png);
   background-attachment: fixed;
   background-color: hsla(247, 65%, 89%, 1);
   background-blend-mode: overlay;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain;
+  background-size: 450px;
 }
 
 
@@ -186,7 +186,9 @@ i {
     display: grid;
     grid-column: 2;
     grid-row: 1;
-    margin-top: -20px;
+    padding-bottom: 20px;
+    width: 250px;
+    margin: 0 auto;
   }
   
   img {

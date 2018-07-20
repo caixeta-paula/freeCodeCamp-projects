@@ -4,7 +4,7 @@ body {
 }
 
 #photo {
-  background: url(https://s12.postimg.org/lmn1x17d9/DSC01735.jpg) no-repeat center center fixed;
+  background-color: #7fb0d8;
   background-size: cover;
   opacity: 0.5;
   position: fixed;
@@ -36,8 +36,12 @@ h1 {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% { 
+      transform: rotate(0deg); 
+    }
+    100% { 
+      transform: rotate(360deg); 
+    }
 }
 
 #icon-error {

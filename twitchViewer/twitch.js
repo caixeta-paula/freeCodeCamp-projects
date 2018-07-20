@@ -1,7 +1,7 @@
 $(document).ready(function() {
   
   // array of channels
-  var streamers = ["freecodecamp", "monstercat", "carusaustralis", "sky_mp3", "LegendOfGamer", "h3h3productions"];
+  var streamers = ["freecodecamp", "monstercat", "carusaustralis", "sky_mp3", "LegendOfGamer", "h3h3productions", "jennajulien", "deadmau5"];
   // user-entered search input
   var searchInput;
   // channel name
